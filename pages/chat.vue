@@ -85,6 +85,7 @@ const isSendButtonDisabled = computed(() => {
     margin-top: 0.5rem;
     margin-right: 1rem;
     color: #c5c5c5;
+    white-space: pre-wrap;
 }
 
 .input-container {
