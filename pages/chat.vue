@@ -47,7 +47,14 @@ const isSendButtonDisabled = computed(() => {
             <div v-for="message in messages">
                 <label>{{ MessageSender[message.sender] }}</label>
                 <p class="message-content">
-                    {{ message.content ?? "Loading..." }}
+                    <template v-if="message.content">
+                        {{  message.content }}
+                    </template>
+                    <template v-else>
+                        <div class="loader-container">
+                            <DotLoader></DotLoader>
+                        </div>
+                    </template>
                 </p>    
             </div>
             
@@ -91,5 +98,12 @@ const isSendButtonDisabled = computed(() => {
     align-items: center;
     border-top: 2px solid #3d3d3d;
     padding-top: 8px;
+}
+
+.loader-container {
+    display: flex;
+    align-items: center;
+    height: 20px; 
+    padding-left: 1rem;
 }
 </style>
