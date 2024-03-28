@@ -1,0 +1,22 @@
+.input {
+    width: 100%;
+    background: #3d3d3d;
+    border: 0;
+    border-radius: 5px;
+    padding: 1rem 2rem;
+    font-size: medium;
+    color: white; 
+    font-family: 'Inter', sans-serif;
+}
+
+.button {
+    background: #19c37d;
+    border-radius: 5px;
+    padding: 0.5rem 2rem;
+    color: white;
+    border: 0;
+    font-size: large;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    height: 100%;
+}
