@@ -1,18 +1,37 @@
 <script setup lang="ts">
 
 const promptInput = ref<string>();
-
 const imageOutput = ref<string | undefined>();
+
+const api = useApi();
+
+async function generateImage(event: Event) {
+    event.preventDefault();
+
+    const prompt = promptInput.value!;
+    promptInput.value = '';
+
+    const response = await api.getGeneratedImage(prompt);
+    imageOutput.value = response;
+}
+
+const isGenerateButtonDisabled = computed(() => {
+    if(!promptInput || !promptInput.value) {
+        return true;
+    }
+
+    return promptInput.value.length == 0;
+})
 
 </script>
 
 <template>
     <div class="container">
-        <div class="prompt-container full-width">
+        <form class="prompt-container full-width" @submit="generateImage">
             <label>Prompt</label>
-            <textarea class="input" v-model="promptInput" placeholder="Enter prompt..." style="height: 100%; resize: none;"></textarea>
-            <button type="button" class="button generate-button">Generate</button>
-        </div>
+            <textarea class="input prompt-input" v-model="promptInput" placeholder="Enter prompt..."></textarea>
+            <button type="submit" class="button generate-button" :disabled="isGenerateButtonDisabled">Generate</button>
+        </form>
         <div class="image-container">
             <label>Generated Image</label>
             <img :src="imageOutput" alt="...">
@@ -41,6 +60,12 @@ const imageOutput = ref<string | undefined>();
     width: 50%;
 }
 
+.prompt-input {
+    height: 100%;
+    resize: none;
+    text-decoration: none;
+}
+
 .generate-button {
     align-self: flex-end;
     height: auto;
@@ -55,5 +80,6 @@ img {
     display: flex;
     justify-content: space-evenly;
     align-items: center;
+    border-radius: 5px;
 }
 </style>
