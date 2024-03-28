@@ -8,5 +8,13 @@ export default defineNuxtConfig({
         { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap' }
       ]
     }
+  },
+  plugins: [
+    '~/plugins/icons.ts'
+  ],
+  build: {
+    transpile: [
+      'oh-vue-icons'
+    ]
   }
 })
