@@ -15,8 +15,8 @@
 body {
     margin: 0;
     overflow: hidden;
-    background: linear-gradient(334deg, #28a08c, #00dc8c);
-    background: #141414;
+    background: linear-gradient(334deg, #28a08c, #141414);
+    /*background: #141414;*/
     background-size: 180% 180%;
     animation: gradient-animation 6s ease infinite;
     color: #ececec;
@@ -47,14 +47,14 @@ body {
 .nav-bar {
     display: flex;
     justify-content: space-around;
-    background: #212121cc;
+    background: #212121dd;
     padding: 0.5rem;
     border-radius: 10px;
     gap: 0.5rem;
 }
 
 .content {
-    background: #212121cc;
+    background: #212121dd;
     border-radius: 10px;
     height: 100%;
     padding: 1rem;
