@@ -20,7 +20,7 @@ body {
     background-size: 180% 180%;
     animation: gradient-animation 6s ease infinite;
     color: #ececec;
-    font-family: 'Inter';
+    font-family: "Inter", sans-serif;
 }
 
 @keyframes gradient-animation {
@@ -70,7 +70,6 @@ body {
     color: #818181;
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
-    font-size: x-large;
     text-decoration: none;
     width: 100%;
     border-radius: 6px;
