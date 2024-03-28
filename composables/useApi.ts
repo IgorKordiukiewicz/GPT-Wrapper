@@ -15,16 +15,6 @@ interface OpenAICreateImageResponse {
 }
 
 export const useApi = () => {
-    const apiKey = localStorage.getItem('apiKey');
-    if(!apiKey) {
-        throw new Error('Api key is not set');
-    }
-
-    const headers = {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`
-    };
-
     return {
         async getChatMessage(messages: {role: string, content: string}[]) {
             try 
@@ -35,7 +25,7 @@ export const useApi = () => {
                         model: 'gpt-4-turbo-preview',
                         messages: messages
                     },
-                    headers: headers
+                    headers: getHeaders()
                 });
 
                 return data.value?.choices[0].message.content;
@@ -53,7 +43,7 @@ export const useApi = () => {
                         model: 'dall-e-3',
                         prompt: prompt
                     },
-                    headers: headers
+                    headers: getHeaders()
                 });
 
                 return data.value?.data[0].url;
@@ -63,4 +53,17 @@ export const useApi = () => {
             }
         }
     }
+}
+
+function getHeaders() {
+    const apiKey = localStorage.getItem('apiKey');
+    if(!apiKey) {
+        throw new Error('Api key is not set');
+    }
+
+    const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`
+    };
+    return headers;
 }
