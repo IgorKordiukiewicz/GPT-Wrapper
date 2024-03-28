@@ -7,7 +7,7 @@ enum MessageSender {
 
 type Message = {
     sender: MessageSender,
-    content: string
+    content: string | undefined
 };
 
 const messages = ref<Message[]>([])
@@ -26,8 +26,9 @@ async function sendMessage(event: Event) {
     messageInput.value = '';
     messages.value.push({ sender: MessageSender.User, content: message });
 
+    messages.value.push({ sender: MessageSender.AI, content: undefined });
     const response = await getGPTResponse(message);
-    messages.value.push({ sender: MessageSender.AI, content: response });
+    messages.value[messages.value.length - 1].content = response;
 }
 
 const isSendButtonDisabled = computed(() => {
@@ -46,7 +47,7 @@ const isSendButtonDisabled = computed(() => {
             <div v-for="message in messages">
                 <label>{{ MessageSender[message.sender] }}</label>
                 <p class="message-content">
-                    {{ message.content }}
+                    {{ message.content ?? "Loading..." }}
                 </p>    
             </div>
             
