@@ -45,6 +45,10 @@ function scrollToLatestMessage() {
     });
 }
 
+function copyToClipboard(content: string) {
+    navigator.clipboard.writeText(content);
+}
+
 const isSendButtonDisabled = computed(() => {
     if(!messageInput || !messageInput.value) {
         return true;
@@ -59,7 +63,17 @@ const isSendButtonDisabled = computed(() => {
     <div class="chat-container">
         <div class="messages-container" ref="messagesContainer">
             <div v-for="message in messages">
-                <label>{{ MessageSender[message.sender] }}</label>
+                <template v-if="message.sender == MessageSender.AI">
+                    <div class="ai-actions">
+                        <label>{{ MessageSender[message.sender] }}</label>
+                        <IconButton v-if="message.content" icon="bi-clipboard" :width-px="16" @click="copyToClipboard(message.content)"></IconButton>
+                        <IconButton v-if="message.content" icon="bi-arrow-counterclockwise" :width-px="16"></IconButton>
+                    </div>
+                </template>
+                <template v-else>
+                    <label>{{ MessageSender[message.sender] }}</label>
+                </template>
+                
                 <p class="message-content">
                     <template v-if="message.content">
                         {{  message.content }}
@@ -121,5 +135,11 @@ const isSendButtonDisabled = computed(() => {
     align-items: center;
     height: 20px; 
     padding-left: 1rem;
+}
+
+.ai-actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
 }
 </style>
