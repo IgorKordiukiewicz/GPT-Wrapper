@@ -17,6 +17,14 @@ const messagesContainer = ref();
 
 const api = useApi();
 
+const isSendButtonDisabled = computed(() => {
+    if(!messageInput || !messageInput.value) {
+        return true;
+    }
+
+    return messageInput.value.length == 0;
+})
+
 async function sendMessage(event: Event) {
     event.preventDefault();
 
@@ -24,17 +32,29 @@ async function sendMessage(event: Event) {
     messageInput.value = '';
     messages.value.push({ sender: MessageSender.User, content: message });
 
-    const apiMessages = messages.value.map(x => ({
-        role: x.sender == MessageSender.AI ? 'assistant' : 'user',
-        content: x.content as string
-    }));
+    await updateLastMessageWithApiResponse();
+}
 
+async function regenerateMessage(event: Event) {
+    messages.value.pop();
+    await updateLastMessageWithApiResponse();
+}
+
+async function updateLastMessageWithApiResponse() {
+    var apiMessages = mapMessagesToApiData();
     messages.value.push({ sender: MessageSender.AI, content: undefined });
     scrollToLatestMessage();
 
     const response = await api.getChatMessage(apiMessages);
     messages.value[messages.value.length - 1].content = response;
     scrollToLatestMessage();
+}
+
+function mapMessagesToApiData() {
+    return messages.value.map(x => ({
+        role: x.sender == MessageSender.AI ? 'assistant' : 'user',
+        content: x.content as string
+    }));
 }
 
 function scrollToLatestMessage() {
@@ -49,13 +69,9 @@ function copyToClipboard(content: string) {
     navigator.clipboard.writeText(content);
 }
 
-const isSendButtonDisabled = computed(() => {
-    if(!messageInput || !messageInput.value) {
-        return true;
-    }
-
-    return messageInput.value.length == 0;
-})
+function isLastMessage(message: Message) {
+    return messages.value.indexOf(message) == messages.value.length - 1;
+}
 
 </script>
 
@@ -67,7 +83,7 @@ const isSendButtonDisabled = computed(() => {
                     <div class="ai-actions">
                         <label>{{ MessageSender[message.sender] }}</label>
                         <IconButton v-if="message.content" icon="bi-clipboard" :width-px="16" @click="copyToClipboard(message.content)"></IconButton>
-                        <IconButton v-if="message.content" icon="bi-arrow-counterclockwise" :width-px="16"></IconButton>
+                        <IconButton v-if="message.content && isLastMessage(message)" icon="bi-arrow-counterclockwise" :width-px="16" @click="regenerateMessage"></IconButton>
                     </div>
                 </template>
                 <template v-else>
