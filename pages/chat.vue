@@ -1,19 +1,60 @@
+<script setup lang="ts">
+
+enum MessageSender {
+    User,
+    AI
+}
+
+type Message = {
+    sender: MessageSender,
+    content: string
+};
+
+const messages = ref<Message[]>([])
+const messageInput = ref<string>();
+
+async function getGPTResponse(message: string) {
+    await new Promise(resolve => setTimeout(resolve, 2000))
+    return 'Lorem ipsum';
+}
+
+async function sendMessage(event: Event) {
+    console.log('test');
+    event.preventDefault();
+
+    const message = messageInput.value!;
+    messageInput.value = '';
+    messages.value.push({ sender: MessageSender.User, content: message });
+
+    const response = await getGPTResponse(message);
+    messages.value.push({ sender: MessageSender.AI, content: response });
+}
+
+const isSendButtonDisabled = computed(() => {
+    if(!messageInput || !messageInput.value) {
+        return true;
+    }
+
+    return messageInput.value.length == 0;
+})
+
+</script>
+
 <template>
     <div class="chat-container">
         <div class="messages-container">
-            <div v-for="index in 10">
-                <label>AI</label>
+            <div v-for="message in messages">
+                <label>{{ MessageSender[message.sender] }}</label>
                 <p class="message-content">
-                    Lorem ipsum
+                    {{ message.content }}
                 </p>    
             </div>
             
         </div>
-        <form class="input-container">
-            <input type="text" class="input" placeholder="Input message" />
-            <button type="submit" class="button">Send</button>
+        <form class="input-container" @submit="sendMessage">
+            <input type="text" class="input" placeholder="Input message" v-model="messageInput" />
+            <button type="submit" class="button" :disabled="isSendButtonDisabled">Send</button>
         </form>
-
     </div>
 </template>
 
@@ -34,10 +75,12 @@
 }
 
 .message-content {
-    background: #3d3d3d;
+    background: #3d3d3d88;
     padding: 1rem;
     border-radius: 5px;
     margin-top: 0.5rem;
+    margin-right: 1rem;
+    color: #c5c5c5;
 }
 
 .input-container {
@@ -48,6 +91,4 @@
     border-top: 2px solid #3d3d3d;
     padding-top: 8px;
 }
-
-
 </style>
