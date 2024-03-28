@@ -3,7 +3,6 @@
 }
 
 .input {
-    width: 100%;
     background: #3d3d3d;
     border: 0;
     border-radius: 5px;
@@ -36,4 +35,8 @@ button[disabled] {
     background: #4b4b4b;
     color: #7e7e7e;
     cursor: default;
+}
+
+.full-width {
+    width: 100%;
 }

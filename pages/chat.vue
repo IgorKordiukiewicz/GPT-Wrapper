@@ -74,7 +74,7 @@ const isSendButtonDisabled = computed(() => {
             
         </div>
         <form class="input-container" @submit="sendMessage">
-            <input type="text" class="input" placeholder="Input message" v-model="messageInput" />
+            <input type="text" class="input full-width" placeholder="Input message" v-model="messageInput" />
             <button type="submit" class="button" :disabled="isSendButtonDisabled">Send</button>
         </form>
     </div>
