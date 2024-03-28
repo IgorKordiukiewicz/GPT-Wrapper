@@ -1,3 +1,7 @@
+:root {
+    --primary-color: #19c37d;
+}
+
 .input {
     width: 100%;
     background: #3d3d3d;
@@ -7,10 +11,16 @@
     font-size: medium;
     color: white; 
     font-family: 'Inter', sans-serif;
+    border-bottom: 2px solid #00000000;
+}
+
+.input:focus {
+    border-bottom: 2px solid var(--primary-color);
+    outline: none;
 }
 
 .button {
-    background: #19c37d;
+    background: var(--primary-color);
     border-radius: 5px;
     padding: 0.5rem 2rem;
     color: white;
