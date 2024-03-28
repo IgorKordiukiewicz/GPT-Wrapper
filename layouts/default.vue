@@ -1,9 +1,15 @@
 <template>
     <div class="main-container">
         <div class="nav-bar">
-            <NuxtLink to="/chat" class="nav-btn">Chat</NuxtLink>
-            <NuxtLink to="/images" class="nav-btn">Images</NuxtLink>
-            <NuxtLink to="/audio" class="nav-btn">Audio</NuxtLink>
+            <NuxtLink to="/chat" class="nav-btn">
+                <IconText text="Chat" icon="bi-chat-fill"></IconText>
+            </NuxtLink>
+            <NuxtLink to="/images" class="nav-btn">
+                <IconText text="Images" icon="bi-image"></IconText>
+            </NuxtLink>
+            <NuxtLink to="/audio" class="nav-btn">
+                <IconText text="Audio" icon="bi-music-note"></IconText>
+            </NuxtLink>
         </div>
         <div class="content">
             <slot />

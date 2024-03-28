@@ -71,11 +71,12 @@ const isSendButtonDisabled = computed(() => {
                     </template>
                 </p>    
             </div>
-            
         </div>
         <form class="input-container" @submit="sendMessage">
-            <input type="text" class="input full-width" placeholder="Input message" v-model="messageInput" />
-            <button type="submit" class="button" :disabled="isSendButtonDisabled">Send</button>
+            <input type="text" class="input full-width" placeholder="Enter message..." v-model="messageInput" />
+            <button type="submit" class="button" :disabled="isSendButtonDisabled">
+                <IconText text="Send" icon="io-send"></IconText>
+            </button>
         </form>
     </div>
 </template>
