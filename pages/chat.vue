@@ -13,13 +13,9 @@ type Message = {
 const messages = ref<Message[]>([])
 const messageInput = ref<string>();
 
-async function getGPTResponse(message: string) {
-    await new Promise(resolve => setTimeout(resolve, 2000))
-    return 'Lorem ipsum';
-}
+const api = useApi();
 
 async function sendMessage(event: Event) {
-    console.log('test');
     event.preventDefault();
 
     const message = messageInput.value!;
@@ -27,7 +23,7 @@ async function sendMessage(event: Event) {
     messages.value.push({ sender: MessageSender.User, content: message });
 
     messages.value.push({ sender: MessageSender.AI, content: undefined });
-    const response = await getGPTResponse(message);
+    const response = await api.getChatMessage(message);
     messages.value[messages.value.length - 1].content = response;
 }
 
