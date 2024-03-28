@@ -81,7 +81,7 @@ body {
 
 .router-link-exact-active {
     transform: scale(1, 1);
-    background: var(--primary-color);
+    background: var(--primary-color) !important;
     color: #ffffff;
 }
 </style>
