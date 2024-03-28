@@ -13,6 +13,8 @@ type Message = {
 const messages = ref<Message[]>([])
 const messageInput = ref<string>();
 
+const messagesContainer = ref();
+
 const api = useApi();
 
 async function sendMessage(event: Event) {
@@ -28,8 +30,19 @@ async function sendMessage(event: Event) {
     }));
 
     messages.value.push({ sender: MessageSender.AI, content: undefined });
+    scrollToLatestMessage();
+
     const response = await api.getChatMessage(apiMessages);
     messages.value[messages.value.length - 1].content = response;
+    scrollToLatestMessage();
+}
+
+function scrollToLatestMessage() {
+    nextTick(() => {
+        if(messagesContainer.value) {
+            messagesContainer.value.scrollTop = messagesContainer.value.scrollHeight;
+        }
+    });
 }
 
 const isSendButtonDisabled = computed(() => {
@@ -44,7 +57,7 @@ const isSendButtonDisabled = computed(() => {
 
 <template>
     <div class="chat-container">
-        <div class="messages-container">
+        <div class="messages-container" ref="messagesContainer">
             <div v-for="message in messages">
                 <label>{{ MessageSender[message.sender] }}</label>
                 <p class="message-content">
