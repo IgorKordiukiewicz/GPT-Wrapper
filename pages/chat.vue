@@ -22,8 +22,13 @@ async function sendMessage(event: Event) {
     messageInput.value = '';
     messages.value.push({ sender: MessageSender.User, content: message });
 
+    const apiMessages = messages.value.map(x => ({
+        role: x.sender == MessageSender.AI ? 'assistant' : 'user',
+        content: x.content as string
+    }));
+
     messages.value.push({ sender: MessageSender.AI, content: undefined });
-    const response = await api.getChatMessage(message);
+    const response = await api.getChatMessage(apiMessages);
     messages.value[messages.value.length - 1].content = response;
 }
 

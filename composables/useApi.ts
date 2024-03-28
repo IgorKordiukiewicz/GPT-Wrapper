@@ -21,16 +21,14 @@ export const useApi = () => {
     };
 
     return {
-        async getChatMessage(message: string) {
+        async getChatMessage(messages: {role: string, content: string}[]) {
             try 
             {
                 const { data } = await useFetch<OpenAIResponse>('https://api.openai.com/v1/chat/completions', {
                     method: 'POST',
                     body: {
                         model: 'gpt-4-turbo-preview',
-                        messages: [
-                            { role: 'user', content: message }
-                        ]
+                        messages: messages
                     },
                     headers: headers
                 });
