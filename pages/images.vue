@@ -34,7 +34,14 @@ const isGenerateButtonDisabled = computed(() => {
         </form>
         <div class="image-container">
             <label>Generated Image</label>
-            <img :src="imageOutput" alt="...">
+            <div class="image-wrap">
+                <img :src="imageOutput" alt="">
+                <div class="image-download-hover" v-if="imageOutput">
+                    <button type="button" class="button primary image-download-button">
+                        <IconText icon="bi-download" text="Download"></IconText>
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -81,5 +88,41 @@ img {
     justify-content: space-evenly;
     align-items: center;
     border-radius: 5px;
+}
+
+.image-wrap {
+    position: relative;
+    width: 100%;
+}
+
+.image-download-hover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: #3d3d3dbb;
+    visibility: hidden;
+    opacity: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: opacity .2s, visibility .2s;
+}
+
+.image-wrap:hover .image-download-hover {
+    visibility: visible;
+    opacity: 1;
+}
+
+.image-download-button {
+    transition: .2s;
+    transform: translateY(1em);
+    height: auto;
+}
+
+.image-wrap:hover .image-download-button {
+    transform: translateY(0);
 }
 </style>
