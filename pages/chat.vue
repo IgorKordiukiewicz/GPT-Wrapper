@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type ExpandableInput from '~/components/ExpandableInput.vue';
+
 
 definePageMeta({
     alias: '/'
@@ -15,25 +17,25 @@ type Message = {
 }
 
 const messages = ref<Message[]>([])
-const messageInput = ref<string>();
+const messageInput = ref<InstanceType<typeof ExpandableInput> | null>();
 
 const messagesContainer = ref();
 
 const api = useApi();
 
 const isSendButtonDisabled = computed(() => {
-    if(!messageInput || !messageInput.value) {
-        return true;
-    }
-
-    return messageInput.value.length == 0;
+    return !messageInput.value?.isValid ?? true;
 })
 
 async function sendMessage(event: Event) {
+    if(!messageInput.value) {
+        return;
+    }
+
     event.preventDefault();
 
-    const message = messageInput.value!;
-    messageInput.value = '';
+    const message = messageInput.value.input!;
+    messageInput.value.reset();
     messages.value.push({ sender: MessageSender.User, content: message });
 
     await updateLastMessageWithApiResponse();
@@ -109,8 +111,8 @@ function isLastMessage(message: Message) {
             </div>
         </div>
         <form class="input-container" @submit="sendMessage">
-            <input type="text" class="input full-width" placeholder="Enter message..." v-model="messageInput" />
-            <button type="submit" class="button primary" :disabled="isSendButtonDisabled">
+            <ExpandableInput placeholder="Enter message..." ref="messageInput"></ExpandableInput>
+            <button type="submit" class="button primary message-button" :disabled="isSendButtonDisabled">
                 <IconText text="Send" icon="io-send"></IconText>
             </button>
         </form>
@@ -147,7 +149,7 @@ function isLastMessage(message: Message) {
     width: 100%;
     display: flex;
     gap: 0.5rem;
-    align-items: center;
+    align-items: end;
     border-top: 2px solid #3d3d3d;
     padding-top: 8px;
 }
@@ -163,5 +165,9 @@ function isLastMessage(message: Message) {
     display: flex;
     gap: 1rem;
     align-items: center;
+}
+
+.message-button {
+    height: 56px;
 }
 </style>
