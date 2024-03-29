@@ -16,6 +16,7 @@ const isGenerateButtonDisabled = computed(() => {
 
 async function generateImage(event: Event) {
     event.preventDefault();
+    imageOutput.value = undefined;
     inProgress.value = true;
 
     const prompt = promptInput.value!;
@@ -37,6 +38,9 @@ async function generateImage(event: Event) {
         <div class="image-container">
             <label>Generated Image</label>
             <img :src="imageOutput" alt=" ">
+            <div class="spinner-container" v-if="!imageOutput && inProgress">
+                <Spinner></Spinner>
+            </div>
         </div>
     </div>
 </template>
@@ -60,6 +64,7 @@ async function generateImage(event: Event) {
     gap: 0.5rem;
     justify-content: center;
     width: 50%;
+    position: relative;
 }
 
 .prompt-input {
@@ -83,5 +88,13 @@ img {
     justify-content: space-evenly;
     align-items: center;
     border-radius: 5px;
+}
+
+.spinner-container {
+    position: absolute;
+    color: red;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
 }
 </style>
