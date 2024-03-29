@@ -15,7 +15,7 @@ const styleObject = reactive({
 </script>
 
 <template>
-    <div class="container" @click="$emit('click')">
+    <div class="container" @click="$emit('onClick')">
         <v-icon :name="icon" :style="styleObject" />
     </div>
 </template>

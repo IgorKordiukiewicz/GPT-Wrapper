@@ -3,6 +3,8 @@ const props = defineProps({
     title: { type: String, required: true }
 })
 
+const emit = defineEmits([ 'onSubmit' ])
+
 const visible = ref<Boolean>(false);
 
 function hide() {
@@ -11,6 +13,12 @@ function hide() {
 
 function show() {
     visible.value = true;
+}
+
+function submit(event: Event) {
+    event.preventDefault();
+    emit('onSubmit');
+    visible.value = false;
 }
 
 defineExpose({ show });
@@ -23,13 +31,15 @@ defineExpose({ show });
                 <h3 class="title">{{ title }}</h3>
                 <IconButton icon="io-close" @click="hide"></IconButton>
             </div>
-            <div class="dialog-content">
-                <slot></slot>
-            </div>
-            <div class="buttons">
-                <button class="button secondary">Cancel</button>
-                <button class="button primary">Save</button>
-            </div>
+            <form @submit="submit">
+                <div class="dialog-content">
+                    <slot></slot>
+                </div>
+                <div class="buttons">
+                    <button type="button" class="button secondary" @click="hide">Cancel</button>
+                    <button type="submit" class="button primary">Save</button>
+                </div>
+            </form>
         </div>
     </div>
 </template>
@@ -72,6 +82,7 @@ defineExpose({ show });
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+    margin: 1rem 0;
 }
 
 .buttons {

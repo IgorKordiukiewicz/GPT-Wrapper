@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const settingsDialog = ref();
+const settings = ref();
 
 function showSettingsDialog() {
     settingsDialog.value.show();
@@ -23,9 +24,9 @@ function showSettingsDialog() {
             <slot />
         </div>
     </div>
-    <IconButton class="settings-button" icon="io-settings-sharp" :size-px="50" @click="showSettingsDialog"></IconButton>
-    <Dialog title="Settings" ref="settingsDialog">
-        <p>Lorem ipsum</p>
+    <IconButton class="settings-button" icon="io-settings-sharp" :size-px="50" @onClick="showSettingsDialog"></IconButton>
+    <Dialog title="Settings" ref="settingsDialog" @onSubmit="settings.update()">
+        <Settings ref="settings"></Settings>
     </Dialog>
 </template>
 
