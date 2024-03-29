@@ -1,5 +1,9 @@
 <script setup lang="ts">
 
+definePageMeta({
+    alias: '/'
+})
+
 enum MessageSender {
     User,
     AI
