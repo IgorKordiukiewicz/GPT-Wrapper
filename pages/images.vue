@@ -2,6 +2,7 @@
 
 const promptInput = ref<string>();
 const imageOutput = ref<string | undefined>();
+const inProgress = ref<boolean>(false);
 
 const api = useApi();
 
@@ -10,17 +11,18 @@ const isGenerateButtonDisabled = computed(() => {
         return true;
     }
 
-    return promptInput.value.length == 0;
+    return promptInput.value.length == 0 || inProgress.value;
 });
 
 async function generateImage(event: Event) {
     event.preventDefault();
+    inProgress.value = true;
 
     const prompt = promptInput.value!;
-    promptInput.value = '';
 
     const response = await api.getGeneratedImage(prompt);
     imageOutput.value = response;
+    inProgress.value = false;
 }
 
 </script>
