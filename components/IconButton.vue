@@ -1,16 +1,17 @@
 <script setup lang="ts">
 const props = defineProps({
     icon: { type: String, required: true },
-    widthPx: { type: Number }
+    sizePx: { type: Number }
 });
 
-const widthElement = computed(() => {
-    return props.widthPx ? `${props.widthPx}px` : '';
-})
+const sizeElement = computed(() => {
+    return props.sizePx ? `${props.sizePx}px` : '';
+});
 
 const styleObject = reactive({
-    width: widthElement
-})
+    width: sizeElement,
+    height: sizeElement
+});
 </script>
 
 <template>

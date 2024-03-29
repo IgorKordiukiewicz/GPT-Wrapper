@@ -1,3 +1,11 @@
+<script setup lang="ts">
+const settingsDialog = ref();
+
+function showSettingsDialog() {
+    settingsDialog.value.show();
+}
+</script>
+
 <template>
     <div class="main-container">
         <div class="nav-bar">
@@ -15,6 +23,10 @@
             <slot />
         </div>
     </div>
+    <IconButton class="settings-button" icon="io-settings-sharp" :size-px="50" @click="showSettingsDialog"></IconButton>
+    <Dialog title="Settings" ref="settingsDialog">
+        <p>Lorem ipsum</p>
+    </Dialog>
 </template>
 
 <style>
@@ -89,5 +101,18 @@ body {
     transform: scale(1, 1);
     background: var(--primary-color) !important;
     color: #ffffff;
+}
+
+.settings-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: #212121dd;
+    transition: transform .3s ease;
+}
+
+.settings-button:hover {
+    transform: rotate(90deg);
+    color: #818181;
 }
 </style>
