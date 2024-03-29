@@ -75,10 +75,6 @@ function scrollToLatestMessage() {
     });
 }
 
-function copyToClipboard(content: string) {
-    navigator.clipboard.writeText(content);
-}
-
 function isLastMessage(message: Message) {
     return messages.value.indexOf(message) == messages.value.length - 1;
 }
@@ -92,7 +88,7 @@ function isLastMessage(message: Message) {
                 <template v-if="message.sender == MessageSender.AI">
                     <div class="ai-actions">
                         <label>{{ MessageSender[message.sender] }}</label>
-                        <IconButton v-if="message.content" icon="bi-clipboard" :size-px="16" @click="copyToClipboard(message.content)"></IconButton>
+                        <ClipboardCopy v-if="message.content" :content="message.content"></ClipboardCopy>
                         <IconButton v-if="message.content && isLastMessage(message)" icon="bi-arrow-counterclockwise" :size-px="16" @click="regenerateMessage"></IconButton>
                     </div>
                 </template>

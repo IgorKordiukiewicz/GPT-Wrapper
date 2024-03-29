@@ -2,13 +2,13 @@ import { OhVueIcon, addIcons } from "oh-vue-icons";
 import { 
     IoSend, BiChatFill, BiImage, BiMusicNote, BiClipboard, 
     BiArrowCounterclockwise, IoSettingsSharp, IoClose, BiEye, BiEyeSlash,
-    BiDownload
+    BiDownload, BiCheck2
  } from "oh-vue-icons/icons";
 
 addIcons(
     IoSend, BiChatFill, BiImage, BiMusicNote, BiClipboard, 
     BiArrowCounterclockwise, IoSettingsSharp, IoClose, BiEye, BiEyeSlash,
-    BiDownload
+    BiDownload, BiCheck2
     );
 
 export default defineNuxtPlugin((nuxtApp) => {
