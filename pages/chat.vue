@@ -2,7 +2,7 @@
 
 definePageMeta({
     alias: '/'
-})
+});
 
 enum MessageSender {
     User,
@@ -12,7 +12,7 @@ enum MessageSender {
 type Message = {
     sender: MessageSender,
     content: string | undefined
-};
+}
 
 const messages = ref<Message[]>([])
 const messageInput = ref<string>();
@@ -50,6 +50,12 @@ async function updateLastMessageWithApiResponse() {
     scrollToLatestMessage();
 
     const response = await api.getChatMessage(apiMessages);
+    if(!response) {
+        messages.value.pop();
+        messages.value.pop();
+        return;
+    }
+
     messages.value[messages.value.length - 1].content = response;
     scrollToLatestMessage();
 }

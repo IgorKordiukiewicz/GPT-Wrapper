@@ -1,3 +1,5 @@
+import { useToast } from "vue-toastification";
+
 interface OpenAIChatResponse {
     id: string;
     object: string;
@@ -15,6 +17,8 @@ interface OpenAICreateImageResponse {
 }
 
 export const useApi = () => {
+    const toast = useToast();
+
     return {
         async getChatMessage(messages: {role: string, content: string}[]) {
             try 
@@ -31,7 +35,7 @@ export const useApi = () => {
                 return data.value?.choices[0].message.content;
             }
             catch(error) {
-                console.log('Error while calling the OpenAI API', error);
+                toast.error('Error while calling the OpenAI API');
             }
         },
         async getGeneratedImage(prompt: string) {
@@ -49,7 +53,7 @@ export const useApi = () => {
                 return data.value?.data[0].url;
             }
             catch(error) {
-                console.log('Error while calling the OpenAI API', error);
+                toast.error('Error while calling the OpenAI API');
             }
         }
     }
