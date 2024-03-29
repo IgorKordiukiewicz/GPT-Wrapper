@@ -1,5 +1,6 @@
 :root {
     --primary-color: #19c37d;
+    --secondary-color: #3d3d3d;
 }
 
 .input {
@@ -19,15 +20,22 @@
 }
 
 .button {
-    background: var(--primary-color);
     border-radius: 5px;
     padding: 0.5rem 2rem;
     color: white;
     border: 0;
-    font-size: large;
+    font-size: medium;
     font-family: 'Inter', sans-serif;
     cursor: pointer;
     height: 100%;
+}
+
+.primary {
+    background: var(--primary-color);
+}
+
+.secondary {
+    background: var(--secondary-color);
 }
 
 button:disabled,

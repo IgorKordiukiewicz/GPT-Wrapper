@@ -30,7 +30,7 @@ const isGenerateButtonDisabled = computed(() => {
         <form class="prompt-container full-width" @submit="generateImage">
             <label>Prompt</label>
             <textarea class="input prompt-input" v-model="promptInput" placeholder="Enter prompt..."></textarea>
-            <button type="submit" class="button generate-button" :disabled="isGenerateButtonDisabled">Generate</button>
+            <button type="submit" class="button generate-button primary" :disabled="isGenerateButtonDisabled">Generate</button>
         </form>
         <div class="image-container">
             <label>Generated Image</label>

@@ -27,8 +27,8 @@ defineExpose({ show });
                 <slot></slot>
             </div>
             <div class="buttons">
-                <button class="button">Cancel</button>
-                <button class="button">Save</button>
+                <button class="button secondary">Cancel</button>
+                <button class="button primary">Save</button>
             </div>
         </div>
     </div>

@@ -104,7 +104,7 @@ function isLastMessage(message: Message) {
         </div>
         <form class="input-container" @submit="sendMessage">
             <input type="text" class="input full-width" placeholder="Enter message..." v-model="messageInput" />
-            <button type="submit" class="button" :disabled="isSendButtonDisabled">
+            <button type="submit" class="button primary" :disabled="isSendButtonDisabled">
                 <IconText text="Send" icon="io-send"></IconText>
             </button>
         </form>
