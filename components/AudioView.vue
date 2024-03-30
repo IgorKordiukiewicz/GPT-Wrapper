@@ -1,7 +1,8 @@
 <script setup lang="ts">
 const props = defineProps({
     src: { type: String },
-    download: { type: Boolean }
+    download: { type: Boolean },
+    reset: { type: Boolean }
 });
 
 const audioElement = ref();
@@ -83,7 +84,6 @@ function downloadFile() {
     if(!props.src) {
         return;
     }
-    console.log('hello');
 
     const element = document.createElement('a');
     element.href = props.src;
@@ -118,6 +118,10 @@ onMounted(() => {
             <template v-if="src">
                 <template v-if="download">
                     <IconButton icon="bi-download" @onClick="downloadFile"></IconButton>
+                    <div class="vertical-separator"></div>
+                </template>
+                <template v-if="reset">
+                    <IconButton icon="io-close" @onClick="$emit('onReset')"></IconButton>
                     <div class="vertical-separator"></div>
                 </template>
                 <IconButton :icon="paused ? 'bi-play-fill' : 'bi-pause-fill'" @onClick="togglePlay" :sizePx="32"></IconButton>
@@ -167,5 +171,7 @@ onMounted(() => {
     height: 32px;
     display: flex;
     align-items: center;
+    text-wrap: nowrap;
+    gap: 2rem;
 }
 </style>

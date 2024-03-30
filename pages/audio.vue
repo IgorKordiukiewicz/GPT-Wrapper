@@ -57,6 +57,14 @@ function submitAudioFile(event: Event) {
     transcriptionAudioInput.value = files[0];
 }
 
+function openFileInput() {
+    document.getElementById('fileUpload')?.click();
+}
+
+function resetTranscriptAudioInput() {
+    transcriptionAudioInput.value = undefined;
+}
+
 </script>
 
 <template>
@@ -80,12 +88,15 @@ function submitAudioFile(event: Event) {
         <div class="vertical-divider"></div>
         <div class="transcription-container">
             <h4 class="header">Transcription</h4>
-            <input type="file" accept=".mp3" @change="submitAudioFile" />
+            <input type="file" accept=".mp3" @change="submitAudioFile" style="display: none;" id="fileUpload" />
             <form class="column-container" @submit="generateTranscription">
                 <label>Audio</label>
-                <AudioView :src="transcriptionAudioInputUrl">
+                <AudioView :src="transcriptionAudioInputUrl" :reset="true" @onReset="resetTranscriptAudioInput">
                     <template #nocontent>
-                        <div>hello</div>
+                        <div class="file-upload-container">
+                            <IconButton icon="bi-upload" :sizePx="24" @onClick="openFileInput"></IconButton>                    
+                            Upload audio file (.mp3)
+                        </div>
                     </template>
                 </AudioView>
                 <button type="submit" class="button primary end-button" :disabled="isGenerateTranscriptionButtonDisabled">Generate</button>
@@ -147,5 +158,12 @@ function submitAudioFile(event: Event) {
 
 .vertical-divider {
     border-right: 1px solid #808080;
+}
+
+.file-upload-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: smaller;
 }
 </style>
