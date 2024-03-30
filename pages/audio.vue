@@ -32,6 +32,7 @@ const transcriptionAudioInputUrl = computed(() => {
 async function generateSpeech(event: Event) {
     event.preventDefault();
     speechInProgress.value = true;
+    speechOutputUrl.value = undefined;
 
     const blob = await api.getGeneratedSpeech(speechContentInput.value!);
     speechOutputUrl.value = window.URL.createObjectURL(blob as Blob);
@@ -41,6 +42,7 @@ async function generateSpeech(event: Event) {
 async function generateTranscription(event: Event) {
     event.preventDefault();
     transcriptionInProgress.value = true;
+    transcriptionOutput.value = undefined;
 
     transcriptionOutput.value = await api.generateTranscription(transcriptionAudioInput.value!);
     transcriptionInProgress.value = false;
@@ -80,7 +82,9 @@ function resetTranscriptAudioInput() {
                 <label>Output</label>
                 <AudioPlayer :src="speechOutputUrl" :download="true">
                     <template #nocontent>
-                        <div>Loading...</div>
+                        <div class="loader-container">
+                            <DotLoader></DotLoader>
+                        </div>
                     </template>
                 </AudioPlayer>
             </div>
@@ -101,10 +105,17 @@ function resetTranscriptAudioInput() {
                 </AudioPlayer>
                 <button type="submit" class="button primary end-button" :disabled="isGenerateTranscriptionButtonDisabled">Generate</button>
             </form>
-            <div class="column-container" v-if="transcriptionOutput">
+            <div class="column-container" v-if="transcriptionOutput || transcriptionInProgress">
                 <label>Output</label>
                 <p class="transcript-content">
-                    {{ transcriptionOutput }}
+                    <template v-if="transcriptionOutput">
+                        {{ transcriptionOutput }}
+                    </template>
+                    <template v-else>
+                        <div class="loader-container">
+                            <DotLoader></DotLoader>
+                        </div>
+                    </template>
                 </p>
             </div>
         </div>
@@ -154,6 +165,14 @@ function resetTranscriptAudioInput() {
     color: #c5c5c5;
     white-space: pre-wrap;
     overflow-y: auto;
+    max-height: 50vh;
+}
+
+.loader-container {
+    display: flex;
+    align-items: center;
+    height: 20px; 
+    padding-left: 1rem;
 }
 
 .vertical-divider {
