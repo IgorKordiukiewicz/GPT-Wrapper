@@ -56,7 +56,6 @@ export const useApi = () => {
         },
         async getGeneratedSpeech(input: string) {
             try {
-                console.log('begin');
                 const { data } = await useFetch('https://api.openai.com/v1/audio/speech', {
                     method: 'POST',
                     body: {
@@ -66,9 +65,27 @@ export const useApi = () => {
                     },
                     headers: getHeaders()
                 });
-                console.log('end');
-                console.log(data);
                 return data.value;
+            }
+            catch(error) {
+                toast.error('Error while calling the OpenAI API');
+            }
+        },
+        async generateTranscription(file: File) {
+            try {
+                const formData = new FormData();
+                formData.append('model', 'whisper-1');
+                formData.append('file', file);
+
+                const { data } = await useFetch<any>('https://api.openai.com/v1/audio/transcriptions', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Authorization': `Bearer ${getApiKey()}`
+                    }
+                });
+                
+                return data.value?.text;
             }
             catch(error) {
                 toast.error('Error while calling the OpenAI API');
@@ -78,14 +95,18 @@ export const useApi = () => {
 }
 
 function getHeaders() {
+    const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${getApiKey()}`
+    };
+    return headers;
+}
+
+function getApiKey() {
     const apiKey = localStorage.getItem('apiKey');
     if(!apiKey) {
         throw new Error('Api key is not set');
     }
 
-    const headers = {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`
-    };
-    return headers;
+    return apiKey;
 }

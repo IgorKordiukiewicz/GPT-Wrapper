@@ -5,22 +5,9 @@ const speechContentInput = ref<string>();
 const speechOutputUrl = ref<string | undefined>();
 const speechInProgress = ref<boolean>(false);
 
-const transcriptionAudioInput = ref<string | undefined>();
+const transcriptionAudioInput = ref<File | undefined>();
 const transcriptionOutput = ref<string | undefined>();
-
-async function generateSpeech(event: Event) {
-    event.preventDefault();
-    speechInProgress.value = true;
-
-    const blob = await api.getGeneratedSpeech(speechContentInput.value!);
-    speechOutputUrl.value = window.URL.createObjectURL(blob as Blob);
-
-    speechInProgress.value = false;
-}
-
-async function generateTranscription(event: Event) {
-    event.preventDefault();
-}
+const transcriptionInProgress = ref<boolean>(false);
 
 const isGenerateSpeechButtonDisabled = computed(() => {
     if(!speechContentInput || !speechContentInput.value) {
@@ -31,8 +18,45 @@ const isGenerateSpeechButtonDisabled = computed(() => {
 });
 
 const isGenerateTranscriptionButtonDisabled = computed(() => {
-    return !transcriptionAudioInput || !transcriptionAudioInput.value;
+    return !transcriptionAudioInput || !transcriptionAudioInput.value || transcriptionInProgress.value; 
+});
+
+const transcriptionAudioInputUrl = computed(() => {
+    if(!transcriptionAudioInput.value) {
+        return;
+    }
+
+    console.log(URL.createObjectURL(transcriptionAudioInput.value as Blob));
+    return URL.createObjectURL(transcriptionAudioInput.value as Blob);
 })
+
+async function generateSpeech(event: Event) {
+    event.preventDefault();
+    speechInProgress.value = true;
+
+    const blob = await api.getGeneratedSpeech(speechContentInput.value!);
+    speechOutputUrl.value = window.URL.createObjectURL(blob as Blob);
+    speechInProgress.value = false;
+}
+
+async function generateTranscription(event: Event) {
+    event.preventDefault();
+    transcriptionInProgress.value = true;
+
+    transcriptionOutput.value = await api.generateTranscription(transcriptionAudioInput.value!);
+    transcriptionInProgress.value = false;
+}
+
+function submitAudioFile(event: Event) {
+    event.preventDefault();
+    const input = event.target as HTMLInputElement;
+    const files = input.files;
+    if(!files || files.length == 0) {
+        return;
+    }
+
+    transcriptionAudioInput.value = files[0];
+}
 
 </script>
 
@@ -50,12 +74,13 @@ const isGenerateTranscriptionButtonDisabled = computed(() => {
                 <audio controls :src="speechOutputUrl"></audio>
             </div>
         </div>
-        <div style="border-right: 1px solid rgb(128, 128, 128);"></div>
+        <div class="vertical-divider"></div>
         <div class="transcription-container">
             <h4 class="header">Transcription</h4>
+            <input type="file" accept=".mp3" @change="submitAudioFile" />
             <form class="column-container" @submit="generateTranscription">
                 <label>Audio</label>
-                <audio controls></audio>
+                <audio controls :src="transcriptionAudioInputUrl"></audio>
                 <button type="submit" class="button primary end-button" :disabled="isGenerateTranscriptionButtonDisabled">Generate</button>
             </form>
             <div class="column-container" v-if="transcriptionOutput">
@@ -110,5 +135,10 @@ const isGenerateTranscriptionButtonDisabled = computed(() => {
     margin: 0;
     color: #c5c5c5;
     white-space: pre-wrap;
+    overflow-y: auto;
+}
+
+.vertical-divider {
+    border-right: 1px solid #808080;
 }
 </style>
