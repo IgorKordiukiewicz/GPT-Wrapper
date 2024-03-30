@@ -32,7 +32,7 @@ async function generateImage(event: Event) {
     <div class="container">
         <form class="prompt-container full-width" @submit="generateImage">
             <label>Prompt</label>
-            <textarea class="input prompt-input" v-model="promptInput" placeholder="Enter prompt..."></textarea>
+            <ExpandableInput v-model="promptInput" placeholder="Enter prompt..."></ExpandableInput>
             <button type="submit" class="button generate-button primary" :disabled="isGenerateButtonDisabled">Generate</button>
         </form>
         <div class="image-container">
@@ -54,6 +54,7 @@ async function generateImage(event: Event) {
 .container {
     display: flex;
     gap: 1rem;
+    height: 100%;
 }
 
 .prompt-container {
@@ -67,13 +68,8 @@ async function generateImage(event: Event) {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    justify-content: center;
     width: 50%;
     position: relative;
-}
-
-.prompt-input {
-    height: 100%;
 }
 
 .generate-button {
