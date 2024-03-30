@@ -26,4 +26,8 @@ const styleObject = reactive({
     cursor: pointer;
     width: fit-content;
 }
+
+.container:hover {
+    color: var(--primary-color);
+}
 </style>

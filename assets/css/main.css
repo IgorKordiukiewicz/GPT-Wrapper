@@ -1,6 +1,8 @@
 :root {
     --primary-color: #19c37d;
     --secondary-color: #3d3d3d;
+    --primary-color-darken: #16ac6d;
+    --secondary-color-darken: #303030;
 }
 
 .input {
@@ -38,9 +40,17 @@
     background: var(--secondary-color);
 }
 
+.button.primary:hover {
+    background: var(--primary-color-darken);
+}
+
+.button.secondary:hover {
+    background: var(--secondary-color-darken);
+}
+
 button:disabled,
 button[disabled] {
-    background: #4b4b4b;
+    background: #4b4b4b !important;
     color: #7e7e7e;
     cursor: default;
 }
