@@ -48,3 +48,8 @@ button[disabled] {
 .full-width {
     width: 100%;
 }
+
+textarea {
+    resize: none;
+    text-decoration: none;
+}
