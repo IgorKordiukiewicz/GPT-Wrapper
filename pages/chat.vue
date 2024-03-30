@@ -124,7 +124,7 @@ function isLastMessage(message: Message) {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 80vh;
+    height: 100%;
 }
 
 .messages-container {

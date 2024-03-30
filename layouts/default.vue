@@ -77,6 +77,7 @@ body {
     border-radius: 10px;
     height: 100%;
     padding: 1rem;
+    overflow-y: hidden;
 }
 
 .nav-btn {
