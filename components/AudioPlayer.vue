@@ -99,6 +99,15 @@ function getCurrentDateString() {
     return new Date().toISOString().replace(/[-:.]/g, '').replace('T', '').split('Z')[0].slice(0, -5);
 }
 
+const playPauseIcon = computed(() => {
+    console.log('test');
+    if(duration.value && currentTime.value >= duration.value) {
+        return 'bi-play-fill';
+    }
+
+    return paused.value ? 'bi-play-fill' : 'bi-pause-fill';
+});
+
 onMounted(() => {
     audioElement.value.onloadedmetadata = function() {
         duration.value = audioElement.value.duration;
@@ -124,8 +133,8 @@ onMounted(() => {
                     <IconButton icon="io-close" @onClick="$emit('onReset')"></IconButton>
                     <div class="vertical-separator"></div>
                 </template>
-                <IconButton :icon="paused ? 'bi-play-fill' : 'bi-pause-fill'" @onClick="togglePlay" :sizePx="32"></IconButton>
-                <input type="range" min="0" :max="duration" step="1" v-model="currentTime" @change="updateCurrentTime" />
+                <IconButton :icon="playPauseIcon" @onClick="togglePlay" :sizePx="32"></IconButton>
+                <input type="range" min="0" :max="duration" step="0.01" v-model="currentTime" @change="updateCurrentTime" />
                 <span class="time-display">
                     {{  timeDisplay }}
                 </span>
