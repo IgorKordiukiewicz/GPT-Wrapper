@@ -78,11 +78,11 @@ function resetTranscriptAudioInput() {
             </form>
             <div class="column-container" v-if="speechOutputUrl || speechInProgress">
                 <label>Output</label>
-                <AudioView :src="speechOutputUrl" :download="true">
+                <AudioPlayer :src="speechOutputUrl" :download="true">
                     <template #nocontent>
                         <div>Loading...</div>
                     </template>
-                </AudioView>
+                </AudioPlayer>
             </div>
         </div>
         <div class="vertical-divider"></div>
@@ -91,14 +91,14 @@ function resetTranscriptAudioInput() {
             <input type="file" accept=".mp3" @change="submitAudioFile" style="display: none;" id="fileUpload" />
             <form class="column-container" @submit="generateTranscription">
                 <label>Audio</label>
-                <AudioView :src="transcriptionAudioInputUrl" :reset="true" @onReset="resetTranscriptAudioInput">
+                <AudioPlayer :src="transcriptionAudioInputUrl" :reset="true" @onReset="resetTranscriptAudioInput">
                     <template #nocontent>
                         <div class="file-upload-container">
                             <IconButton icon="bi-upload" :sizePx="24" @onClick="openFileInput"></IconButton>                    
                             Upload audio file (.mp3)
                         </div>
                     </template>
-                </AudioView>
+                </AudioPlayer>
                 <button type="submit" class="button primary end-button" :disabled="isGenerateTranscriptionButtonDisabled">Generate</button>
             </form>
             <div class="column-container" v-if="transcriptionOutput">
