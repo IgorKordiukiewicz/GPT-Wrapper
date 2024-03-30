@@ -128,7 +128,7 @@ function isLastMessage(message: Message) {
 }
 
 .messages-container {
-    overflow-y: scroll;
+    overflow-y: auto;
     flex: 1;
     width: 100%;
     height: 100%;
