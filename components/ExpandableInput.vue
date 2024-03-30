@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const props = defineProps({
-    placeholder: { type: String }
+    placeholder: { type: String },
+    fullWidth: { type: Boolean, default: false }
 });
 
 const input = ref<string>();
@@ -31,7 +32,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <textarea type="text" class="input full-width message-text-area" :placeholder="props.placeholder" v-model="input" ref="textArea"></textarea>
+    <textarea type="text" class="input message-text-area" :placeholder="props.placeholder" v-model="input" ref="textArea" :class="{ 'full-width': fullWidth }"></textarea>
 </template>
 
 <style scoped>

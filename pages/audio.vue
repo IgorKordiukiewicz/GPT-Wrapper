@@ -73,13 +73,14 @@ function resetTranscriptAudioInput() {
     <div class="container">
         <div class="speech-container">
             <h4 class="header">Speech</h4>
-            <form class="column-container" @submit="generateSpeech">
-                <label>Content</label>
-                <textarea class="input" placeholder="Enter content..." v-model="speechContentInput"></textarea>
-                <button type="submit" class="button primary end-button" :disabled="isGenerateSpeechButtonDisabled">Generate</button>
-            </form>
-            <div class="column-container" v-if="speechOutputUrl || speechInProgress">
-                <label>Output</label>
+            <div class="content-container column-container">
+                <form class="column-container overflow-auto" @submit="generateSpeech">
+                    <label>Content</label>
+                    <ExpandableInput placeholder="Enter content..." v-model="speechContentInput"></ExpandableInput>
+                    <button type="submit" class="button primary end-button" :disabled="isGenerateSpeechButtonDisabled">Generate</button>
+                </form>
+                <template v-if="speechOutputUrl || speechInProgress">
+                    <label>Output</label>
                 <AudioPlayer :src="speechOutputUrl" :download="true">
                     <template #nocontent>
                         <div class="loader-container">
@@ -87,36 +88,39 @@ function resetTranscriptAudioInput() {
                         </div>
                     </template>
                 </AudioPlayer>
+                </template>
             </div>
         </div>
         <div class="vertical-divider"></div>
         <div class="transcription-container">
             <h4 class="header">Transcription</h4>
-            <input type="file" accept=".mp3" @change="submitAudioFile" style="display: none;" id="fileUpload" />
-            <form class="column-container" @submit="generateTranscription">
-                <label>Audio</label>
-                <AudioPlayer :src="transcriptionAudioInputUrl" :reset="true" @onReset="resetTranscriptAudioInput">
+            <div class="content-container column-container">
+                <input type="file" accept=".mp3" @change="submitAudioFile" style="display: none;" id="fileUpload" />
+                <form class="column-container" @submit="generateTranscription">
+                    <label>Audio</label>
+                    <AudioPlayer :src="transcriptionAudioInputUrl" :reset="true" @onReset="resetTranscriptAudioInput">
                     <template #nocontent>
                         <div class="file-upload-container">
                             <IconButton icon="bi-upload" :sizePx="24" @onClick="openFileInput"></IconButton>                    
                             Upload audio file (.mp3)
                         </div>
                     </template>
-                </AudioPlayer>
-                <button type="submit" class="button primary end-button" :disabled="isGenerateTranscriptionButtonDisabled">Generate</button>
-            </form>
-            <div class="column-container" v-if="transcriptionOutput || transcriptionInProgress">
-                <label>Output</label>
-                <p class="transcript-content">
-                    <template v-if="transcriptionOutput">
-                        {{ transcriptionOutput }}
-                    </template>
-                    <template v-else>
-                        <div class="loader-container">
-                            <DotLoader></DotLoader>
-                        </div>
-                    </template>
-                </p>
+                    </AudioPlayer>
+                    <button type="submit" class="button primary end-button" :disabled="isGenerateTranscriptionButtonDisabled">Generate</button>
+                </form>
+                <div class="column-container overflow-auto" v-if="transcriptionOutput || transcriptionInProgress">
+                    <label>Output</label>
+                    <p class="transcript-content">
+                        <template v-if="transcriptionOutput">
+                            {{ transcriptionOutput }}
+                        </template>
+                        <template v-else>
+                            <div class="loader-container">
+                                <DotLoader></DotLoader>
+                            </div>
+                        </template>
+                    </p>
+                </div>
             </div>
         </div>
     </div>
@@ -133,11 +137,13 @@ function resetTranscriptAudioInput() {
 .speech-container {
     height: 100%;
     width: 50%;
+    overflow-y: hidden;
 }
 
 .transcription-container {
     height: 100%;
     width: 50%;
+    overflow-y: hidden;
 }
 
 .header {
@@ -153,6 +159,15 @@ function resetTranscriptAudioInput() {
     width: 100%;
 }
 
+.overflow-auto {
+    overflow-y: auto;
+}
+
+.content-container {
+    overflow-y: hidden;
+    max-height: calc(100% - 20px - 1rem);
+}
+
 .end-button {
     align-self: end;
 }
@@ -165,7 +180,6 @@ function resetTranscriptAudioInput() {
     color: #c5c5c5;
     white-space: pre-wrap;
     overflow-y: auto;
-    max-height: 50vh;
 }
 
 .loader-container {

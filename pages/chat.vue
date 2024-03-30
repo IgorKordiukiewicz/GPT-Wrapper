@@ -111,7 +111,7 @@ function isLastMessage(message: Message) {
             </div>
         </div>
         <form class="input-container" @submit="sendMessage">
-            <ExpandableInput placeholder="Enter message..." ref="messageInput"></ExpandableInput>
+            <ExpandableInput placeholder="Enter message..." ref="messageInput" :fullWidth="true"></ExpandableInput>
             <button type="submit" class="button primary message-button" :disabled="isSendButtonDisabled">
                 <IconText text="Send" icon="io-send"></IconText>
             </button>
