@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const props = defineProps({
-    src: { type: String }
+    src: { type: String },
+    download: { type: Boolean }
 });
 
 const audioElement = ref();
@@ -78,6 +79,26 @@ function togglePlay() {
     }
 }
 
+function downloadFile() {
+    if(!props.src) {
+        return;
+    }
+    console.log('hello');
+
+    const element = document.createElement('a');
+    element.href = props.src;
+    element.target = '_blank';
+    element.download = `audiofile-${getCurrentDateString()}.mp3`;
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+}
+
+// TODO: Move to composable?
+function getCurrentDateString() {
+    return new Date().toISOString().replace(/[-:.]/g, '').replace('T', '').split('Z')[0].slice(0, -5);
+}
+
 onMounted(() => {
     audioElement.value.onloadedmetadata = function() {
         duration.value = audioElement.value.duration;
@@ -94,14 +115,25 @@ onMounted(() => {
     <div>
         <audio :src="src" ref="audioElement" preload="metadata"></audio>
         <div class="audio-container">
-            <IconButton :icon="paused ? 'bi-play-fill' : 'bi-pause-fill'" @onClick="togglePlay" :sizePx="32"></IconButton>
-            <input type="range" min="0" :max="duration" step="1" v-model="currentTime" @change="updateCurrentTime" />
-            <span style="white-space: nowrap; font-size: small;">
-               {{  timeDisplay }}
-            </span>
-            <div></div>
-            <IconButton :icon="muted ? 'fa-volume-mute' : 'fa-volume-up'" :sizePx="24" @onClick="toggleMute"></IconButton>
-            <input type="range" min="0" max="1" step="0.01" style="width: 5rem;" @change="updateVolume" ref="volumeSlider" />
+            <template v-if="src">
+                <template v-if="download">
+                    <IconButton icon="bi-download" @onClick="downloadFile"></IconButton>
+                    <div class="vertical-separator"></div>
+                </template>
+                <IconButton :icon="paused ? 'bi-play-fill' : 'bi-pause-fill'" @onClick="togglePlay" :sizePx="32"></IconButton>
+                <input type="range" min="0" :max="duration" step="1" v-model="currentTime" @change="updateCurrentTime" />
+                <span class="time-display">
+                    {{  timeDisplay }}
+                </span>
+                <div></div>
+                <IconButton :icon="muted ? 'fa-volume-mute' : 'fa-volume-up'" :sizePx="24" @onClick="toggleMute"></IconButton>
+                <input type="range" min="0" max="1" step="0.01" class="volume-slider" @change="updateVolume" ref="volumeSlider" />
+            </template>
+            <template v-else>
+                <div class="nocontent-container">
+                    <slot name="nocontent"></slot>
+                </div>
+            </template>
         </div>
     </div>
 </template>
@@ -113,6 +145,27 @@ onMounted(() => {
     align-items: center;
     border-radius: 5px;
     gap: 0.5rem;
-    padding: 0.5rem;
+    padding: 0.5rem 1rem;
+}
+
+.time-display {
+    white-space: nowrap;
+    font-size: small;
+}
+
+.volume-slider {
+    width: 5rem;
+}
+
+.vertical-separator {
+    border-right: 1px solid #ccc;
+    height: 24px;
+    margin-left: 5px;
+}
+
+.nocontent-container {
+    height: 32px;
+    display: flex;
+    align-items: center;
 }
 </style>

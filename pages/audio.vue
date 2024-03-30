@@ -68,9 +68,13 @@ function submitAudioFile(event: Event) {
                 <textarea class="input" placeholder="Enter content..." v-model="speechContentInput"></textarea>
                 <button type="submit" class="button primary end-button" :disabled="isGenerateSpeechButtonDisabled">Generate</button>
             </form>
-            <div class="column-container" v-if="speechOutputUrl">
+            <div class="column-container" v-if="speechOutputUrl || speechInProgress">
                 <label>Output</label>
-                <audio controls :src="speechOutputUrl"></audio>
+                <AudioView :src="speechOutputUrl" :download="true">
+                    <template #nocontent>
+                        <div>Loading...</div>
+                    </template>
+                </AudioView>
             </div>
         </div>
         <div class="vertical-divider"></div>
@@ -79,8 +83,11 @@ function submitAudioFile(event: Event) {
             <input type="file" accept=".mp3" @change="submitAudioFile" />
             <form class="column-container" @submit="generateTranscription">
                 <label>Audio</label>
-                <audio controls :src="transcriptionAudioInputUrl"></audio>
-                <AudioView :src="transcriptionAudioInputUrl"></AudioView>
+                <AudioView :src="transcriptionAudioInputUrl">
+                    <template #nocontent>
+                        <div>hello</div>
+                    </template>
+                </AudioView>
                 <button type="submit" class="button primary end-button" :disabled="isGenerateTranscriptionButtonDisabled">Generate</button>
             </form>
             <div class="column-container" v-if="transcriptionOutput">
