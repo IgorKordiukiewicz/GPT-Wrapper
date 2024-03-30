@@ -26,7 +26,6 @@ const transcriptionAudioInputUrl = computed(() => {
         return;
     }
 
-    console.log(URL.createObjectURL(transcriptionAudioInput.value as Blob));
     return URL.createObjectURL(transcriptionAudioInput.value as Blob);
 })
 
@@ -81,6 +80,7 @@ function submitAudioFile(event: Event) {
             <form class="column-container" @submit="generateTranscription">
                 <label>Audio</label>
                 <audio controls :src="transcriptionAudioInputUrl"></audio>
+                <AudioView :src="transcriptionAudioInputUrl"></AudioView>
                 <button type="submit" class="button primary end-button" :disabled="isGenerateTranscriptionButtonDisabled">Generate</button>
             </form>
             <div class="column-container" v-if="transcriptionOutput">

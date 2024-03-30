@@ -1,0 +1,118 @@
+<script setup lang="ts">
+const props = defineProps({
+    src: { type: String }
+});
+
+const audioElement = ref();
+const volumeSlider = ref();
+
+const duration = ref<number | undefined>();
+const lastVolume = ref<number>(1);
+const muted = ref<boolean>(false);
+const paused = ref<boolean>(true);
+
+const currentTime = ref<number>(0);
+
+const timeDisplay = computed(() => {
+    if(!audioElement.value || !duration.value) {
+        return;
+    }
+
+    return `${secondsParsed(currentTime.value)} / ${secondsParsed(duration.value)}`;
+});
+
+function secondsParsed(seconds: number) {
+    return new Date(seconds * 1000).toISOString().substring(14, 19);
+}
+
+function updateCurrentTime(event: Event) {
+    if(!audioElement.value) {
+        return;
+    }
+    event.preventDefault();
+
+    audioElement.value.currentTime = currentTime.value;
+}
+
+function updateVolume(event: Event) {
+    if(!audioElement.value) {
+        return;
+    }
+    event.preventDefault();
+
+    const newVolume = Number((event.target as HTMLInputElement).value);
+    lastVolume.value = newVolume;
+    audioElement.value.volume = newVolume;
+    muted.value = newVolume == 0;
+}
+
+function toggleMute() {
+    if(!audioElement.value || !volumeSlider.value) {
+        return;
+    }
+
+    if(muted.value) {
+        muted.value = false;
+        audioElement.value.volume = lastVolume.value;
+        volumeSlider.value.value = lastVolume.value;
+    }
+    else {
+        muted.value = true;
+        audioElement.value.volume = 0;
+        volumeSlider.value.value = 0;
+    }
+}
+
+function togglePlay() {
+    if(!audioElement.value) {
+        return;
+    }
+
+    if(paused.value) {
+        audioElement.value.play();
+        paused.value = false;
+    }
+    else {
+        audioElement.value.pause();
+        paused.value = true;
+    }
+}
+
+onMounted(() => {
+    audioElement.value.onloadedmetadata = function() {
+        duration.value = audioElement.value.duration;
+    }
+
+    audioElement.value.addEventListener('timeupdate', function() {
+        currentTime.value = audioElement.value.currentTime;
+    })
+});
+
+</script>
+
+<template>
+    <div>
+        <audio :src="src" ref="audioElement" preload="metadata"></audio>
+        <div class="audio-container">
+            <IconButton :icon="paused ? 'bi-play-fill' : 'bi-pause-fill'" @onClick="togglePlay" :sizePx="32"></IconButton>
+            <input type="range" min="0" :max="duration" step="1" v-model="currentTime" @change="updateCurrentTime" />
+            <span style="white-space: nowrap; font-size: small;">
+               {{  timeDisplay }}
+            </span>
+            <div></div>
+            <IconButton :icon="muted ? 'fa-volume-mute' : 'fa-volume-up'" :sizePx="24" @onClick="toggleMute"></IconButton>
+            <input type="range" min="0" max="1" step="0.01" style="width: 5rem;" @change="updateVolume" ref="volumeSlider" />
+        </div>
+    </div>
+</template>
+
+<style scoped>
+.audio-container {
+    display: flex;
+    background: #3d3d3d;
+    align-items: center;
+    border-radius: 5px;
+    gap: 0.5rem;
+    padding: 0.5rem;
+}
+</style>
