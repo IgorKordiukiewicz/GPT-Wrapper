@@ -3,12 +3,19 @@ const api = useApi();
 
 const speechContentInput = ref<string>();
 const speechOutputUrl = ref<string | undefined>();
+const speechInProgress = ref<boolean>(false);
 
 const transcriptionAudioInput = ref<string | undefined>();
 const transcriptionOutput = ref<string | undefined>();
 
 async function generateSpeech(event: Event) {
     event.preventDefault();
+    speechInProgress.value = true;
+
+    const blob = await api.getGeneratedSpeech(speechContentInput.value!);
+    speechOutputUrl.value = window.URL.createObjectURL(blob as Blob);
+
+    speechInProgress.value = false;
 }
 
 async function generateTranscription(event: Event) {
@@ -20,7 +27,7 @@ const isGenerateSpeechButtonDisabled = computed(() => {
         return true;
     }
 
-    return speechContentInput.value.length == 0;
+    return speechContentInput.value.length == 0 || speechInProgress.value;
 });
 
 const isGenerateTranscriptionButtonDisabled = computed(() => {

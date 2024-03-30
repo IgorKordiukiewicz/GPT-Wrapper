@@ -21,8 +21,7 @@ export const useApi = () => {
 
     return {
         async getChatMessage(messages: {role: string, content: string}[]) {
-            try 
-            {
+            try  {
                 const { data } = await useFetch<OpenAIChatResponse>('https://api.openai.com/v1/chat/completions', {
                     method: 'POST',
                     body: {
@@ -39,8 +38,7 @@ export const useApi = () => {
             }
         },
         async getGeneratedImage(prompt: string) {
-            try
-            {
+            try {
                 const { data } = await useFetch<OpenAICreateImageResponse>('https://api.openai.com/v1/images/generations', {
                     method: 'POST',
                     body: {
@@ -51,6 +49,26 @@ export const useApi = () => {
                 });
 
                 return data.value?.data[0].url;
+            }
+            catch(error) {
+                toast.error('Error while calling the OpenAI API');
+            }
+        },
+        async getGeneratedSpeech(input: string) {
+            try {
+                console.log('begin');
+                const { data } = await useFetch('https://api.openai.com/v1/audio/speech', {
+                    method: 'POST',
+                    body: {
+                        model: 'tts-1',
+                        input: input,
+                        voice: 'alloy'
+                    },
+                    headers: getHeaders()
+                });
+                console.log('end');
+                console.log(data);
+                return data.value;
             }
             catch(error) {
                 toast.error('Error while calling the OpenAI API');
