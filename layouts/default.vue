@@ -1,25 +1,11 @@
 <script setup lang="ts">
 const settingsDialog = ref();
 const settingsKeyInput = ref();
-const initialKeyInput = ref();
 const hasApiKey = ref<boolean>();
 
 function showSettingsDialog() {
     settingsDialog.value.show();
 }
-
-function updateApiKey() {
-    if(!initialKeyInput.value) {
-        return;
-    }
-
-    initialKeyInput.value.update();
-    hasApiKey.value = true;
-}
-
-const isContinueButtonDisabled = computed(() => {
-    return initialKeyInput.value?.apiKeyInput?.length == 0 ?? true;
-})
 
 onMounted(() => {
     const apiKey = localStorage.getItem('apiKey');
@@ -51,12 +37,7 @@ onMounted(() => {
         </Dialog>
     </template>
     <template v-else>
-        <div class="center-container">
-            <div class="key-input-container">
-                <KeyInput ref="initialKeyInput"></KeyInput>
-                <button type="button" class="button primary" style="align-self: end" @click="updateApiKey" :disabled="isContinueButtonDisabled">Continue</button>
-            </div>
-        </div>
+        <InitialScreen @onUpdate="hasApiKey = true"></InitialScreen>
     </template>
 </template>
 
@@ -91,23 +72,6 @@ body {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-}
-
-.key-input-container {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    background: #212121dd;
-    border-radius: 10px;
-    padding: 1rem;
-}
-
-.center-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100vw;
-    height: 100vh;
 }
 
 .nav-bar {
