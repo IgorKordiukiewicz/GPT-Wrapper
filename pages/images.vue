@@ -41,11 +41,10 @@ async function generateImage(event: Event) {
                 <img :src="imageOutput" class="image">
             </template>
             <template v-else>
-                <div class="image"></div>
+                <div class="image-skeleton">
+                    <Spinner v-if="inProgress"></Spinner>
+                </div>
             </template>
-            <div class="spinner-container" v-if="!imageOutput && inProgress">
-                <Spinner></Spinner>
-            </div>
         </div>
     </div>
 </template>
@@ -77,18 +76,14 @@ async function generateImage(event: Event) {
     height: auto;
 }
 
-.image {
+.image-skeleton {
     width: 100%;
     aspect-ratio: 1;
     background: #3d3d3d55;
     overflow: hidden;
     border-radius: 5px;
-}
-
-.spinner-container {
-    position: absolute;
-    transform: translate(-50%, -50%);
-    top: 50%;
-    left: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 </style>
