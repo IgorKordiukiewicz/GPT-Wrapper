@@ -44,7 +44,7 @@ defineExpose({ update, apiKeyInput });
 .separator {
     position: absolute;
     border-right: 1px solid #ccc;
-    height: 30px; /* Adjust height as needed */
+    height: 30px;
     right: 60px;
     transform: translateY(-50%);
     top: 50%;

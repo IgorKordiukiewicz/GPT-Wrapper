@@ -150,7 +150,7 @@ function isLastMessage(message: Message) {
     display: flex;
     gap: 0.5rem;
     align-items: end;
-    border-top: 2px solid #3d3d3d;
+    border-top: 2px solid var(--secondary-color);
     padding-top: 8px;
 }
 

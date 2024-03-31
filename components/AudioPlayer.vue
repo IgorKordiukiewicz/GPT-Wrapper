@@ -154,7 +154,7 @@ onMounted(() => {
 <style scoped>
 .audio-container {
     display: flex;
-    background: #3d3d3d;
+    background: var(--secondary-color);
     align-items: center;
     border-radius: 5px;
     gap: 0.5rem;

@@ -55,7 +55,7 @@ defineExpose({ show });
 }
 
 .dialog {
-    background: #212121dd;
+    background: var(--background-color);
     position: relative;
     border-radius: 10px;
     padding: 1rem;

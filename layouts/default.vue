@@ -77,14 +77,14 @@ body {
 .nav-bar {
     display: flex;
     justify-content: space-around;
-    background: #212121dd;
+    background: var(--background-color);
     padding: 0.5rem;
     border-radius: 10px;
     gap: 0.5rem;
 }
 
 .content {
-    background: #212121dd;
+    background: var(--background-color);
     border-radius: 10px;
     height: 100%;
     padding: 1rem;
@@ -120,7 +120,7 @@ body {
     position: absolute;
     top: 10px;
     right: 10px;
-    color: #212121dd;
+    color: var(--background-color);
     transition: transform .3s ease;
 }
 

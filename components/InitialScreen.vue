@@ -34,7 +34,7 @@ function onSubmit() {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    background: #212121dd;
+    background: var(--background-color);
     border-radius: 10px;
     padding: 1rem;
 }
