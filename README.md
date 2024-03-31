@@ -1,75 +1,9 @@
-# Nuxt 3 Minimal Starter
+# GPT Wrapper
+OpenAI GPT Wrapper web application made with Vue 3 and Nuxt.
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+https://gpt-wrapper.pages.dev/
 
-## Setup
-
-Make sure to install the dependencies:
-
-```bash
-# npm
-npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
-```
-
-## Development Server
-
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm run dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm run build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm run preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+## Screenshots
+![opera_7ITEYr2qNz](https://github.com/IgorKordiukiewicz/GPT-Wrapper/assets/25117425/af657ffd-2496-45f5-972d-d95693d88356)
+![opera_vVq6npj4or](https://github.com/IgorKordiukiewicz/GPT-Wrapper/assets/25117425/cafdfd0f-9162-49cf-a96d-e1d2e88ec24a)
+![opera_3Mh9AD7afG](https://github.com/IgorKordiukiewicz/GPT-Wrapper/assets/25117425/de7424a2-aec9-4c9f-8760-8492fdd065a2)
