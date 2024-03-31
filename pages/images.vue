@@ -41,7 +41,7 @@ async function generateImage(event: Event) {
                 <img :src="imageOutput" class="image">
             </template>
             <template v-else>
-                <div class="image-skeleton">
+                <div class="image">
                     <Spinner v-if="inProgress"></Spinner>
                 </div>
             </template>
@@ -71,7 +71,7 @@ async function generateImage(event: Event) {
     position: relative;
 }
 
-.image-skeleton {
+.image {
     width: 100%;
     aspect-ratio: 1;
     background: #3d3d3d55;
