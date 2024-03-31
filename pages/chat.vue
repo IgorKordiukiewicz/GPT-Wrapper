@@ -51,7 +51,7 @@ async function updateLastMessageWithApiResponse() {
     messages.value.push({ sender: MessageSender.AI, content: undefined });
     scrollToLatestMessage();
 
-    const response = await api.getChatMessage(apiMessages);
+    const response = await api.sendChatMessage(apiMessages);
     if(!response) {
         messages.value.pop();
         messages.value.pop();

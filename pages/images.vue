@@ -21,7 +21,7 @@ async function generateImage(event: Event) {
 
     const prompt = promptInput.value!;
 
-    const response = await api.getGeneratedImage(prompt);
+    const response = await api.generateImage(prompt);
     imageOutput.value = response;
     inProgress.value = false;
 }

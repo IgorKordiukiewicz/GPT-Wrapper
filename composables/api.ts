@@ -27,21 +27,21 @@ export const useApi = () => {
     }
 
     return {
-        async getChatMessage(messages: {role: string, content: string}[]) {
+        async sendChatMessage(messages: {role: string, content: string}[]) {
             const data = await performRequest('https://api.openai.com/v1/chat/completions', {
                 model: 'gpt-4-turbo-preview',
                 messages: messages
             });
             return data.choices[0].message.content;
         },
-        async getGeneratedImage(prompt: string) {
+        async generateImage(prompt: string) {
             const data = await performRequest('https://api.openai.com/v1/images/generations', {
                 model: 'dall-e-3',
                 prompt: prompt
             });
             return data.data[0].url;
         },
-        async getGeneratedSpeech(input: string) {
+        async generateSpeech(input: string) {
             const data = await performRequest('https://api.openai.com/v1/audio/speech', {
                 model: 'tts-1',
                 input: input,

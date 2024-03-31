@@ -34,7 +34,7 @@ async function generateSpeech(event: Event) {
     speechInProgress.value = true;
     speechOutputUrl.value = undefined;
 
-    const blob = await api.getGeneratedSpeech(speechContentInput.value!);
+    const blob = await api.generateSpeech(speechContentInput.value!);
     speechOutputUrl.value = window.URL.createObjectURL(blob as Blob);
     speechInProgress.value = false;
 }
