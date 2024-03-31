@@ -1,95 +1,63 @@
 import { useToast } from "vue-toastification";
 
-interface OpenAIChatResponse {
-    id: string;
-    object: string;
-    created: number;
-    model: string;
-    choices: Array<{message: {
-        content: string;
-        role: string;
-    }}>;
-}
-
-interface OpenAICreateImageResponse {
-    created: number;
-    data: Array<{ url: string }>
-}
-
 export const useApi = () => {
     const toast = useToast();
 
+    async function performRequest(url: string, body: any, headers?: any) {
+        try  {
+            const { data, error } = await useFetch<any>(url, {
+                method: 'POST',
+                body: body,
+                headers: headers ? headers : getHeaders()
+            });
+    
+            if(error.value) {
+                throw new Error(error.value.message);
+            }
+    
+            if(!data.value) {
+                throw new Error('Data is empty');
+            }
+    
+            return data.value;
+        }
+        catch(error) {
+            toast.error('Error while calling the OpenAI API');
+        }
+    }
+
     return {
         async getChatMessage(messages: {role: string, content: string}[]) {
-            try  {
-                const { data } = await useFetch<OpenAIChatResponse>('https://api.openai.com/v1/chat/completions', {
-                    method: 'POST',
-                    body: {
-                        model: 'gpt-4-turbo-preview',
-                        messages: messages
-                    },
-                    headers: getHeaders()
-                });
-
-                return data.value?.choices[0].message.content;
-            }
-            catch(error) {
-                toast.error('Error while calling the OpenAI API');
-            }
+            const data = await performRequest('https://api.openai.com/v1/chat/completions', {
+                model: 'gpt-4-turbo-preview',
+                messages: messages
+            });
+            return data.choices[0].message.content;
         },
         async getGeneratedImage(prompt: string) {
-            try {
-                const { data } = await useFetch<OpenAICreateImageResponse>('https://api.openai.com/v1/images/generations', {
-                    method: 'POST',
-                    body: {
-                        model: 'dall-e-3',
-                        prompt: prompt
-                    },
-                    headers: getHeaders()
-                });
-
-                return data.value?.data[0].url;
-            }
-            catch(error) {
-                toast.error('Error while calling the OpenAI API');
-            }
+            const data = await performRequest('https://api.openai.com/v1/images/generations', {
+                model: 'dall-e-3',
+                prompt: prompt
+            });
+            return data.data[0].url;
         },
         async getGeneratedSpeech(input: string) {
-            try {
-                const { data } = await useFetch('https://api.openai.com/v1/audio/speech', {
-                    method: 'POST',
-                    body: {
-                        model: 'tts-1',
-                        input: input,
-                        voice: 'alloy'
-                    },
-                    headers: getHeaders()
-                });
-                return data.value;
-            }
-            catch(error) {
-                toast.error('Error while calling the OpenAI API');
-            }
+            const data = await performRequest('https://api.openai.com/v1/audio/speech', {
+                model: 'tts-1',
+                input: input,
+                voice: 'alloy'
+            });
+            return data;
         },
         async generateTranscription(file: File) {
-            try {
-                const formData = new FormData();
-                formData.append('model', 'whisper-1');
-                formData.append('file', file);
+            const formData = new FormData();
+            formData.append('model', 'whisper-1');
+            formData.append('file', file);
 
-                const { data } = await useFetch<any>('https://api.openai.com/v1/audio/transcriptions', {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'Authorization': `Bearer ${getApiKey()}`
-                    }
-                });
-                
-                return data.value?.text;
-            }
-            catch(error) {
-                toast.error('Error while calling the OpenAI API');
-            }
+            const data = await performRequest('https://api.openai.com/v1/audio/transcriptions', formData, {
+                'Authorization': `Bearer ${getApiKey()}`
+            });
+            return data.text;
         }
     }
 }
