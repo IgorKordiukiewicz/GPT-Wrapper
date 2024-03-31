@@ -109,7 +109,10 @@ function resetTranscriptAudioInput() {
                     <button type="submit" class="button primary end-button" :disabled="isGenerateTranscriptionButtonDisabled">Generate</button>
                 </form>
                 <div class="column-container overflow-auto" v-if="transcriptionOutput || transcriptionInProgress">
-                    <label>Output</label>
+                    <div class="output-actions">
+                        <label>Output</label>
+                        <ClipboardCopy v-if="transcriptionOutput" :content="transcriptionOutput"></ClipboardCopy>
+                    </div>
                     <p class="transcript-content">
                         <template v-if="transcriptionOutput">
                             {{ transcriptionOutput }}
@@ -198,5 +201,11 @@ function resetTranscriptAudioInput() {
     align-items: center;
     gap: 1rem;
     font-size: smaller;
+}
+
+.output-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
 }
 </style>
