@@ -10,7 +10,7 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "nuxt": "^3.11.0",
+    "nuxt": "^3.11.1",
     "oh-vue-icons": "^1.0.0-rc3",
     "vue": "^3.4.21",
     "vue-router": "^4.3.0",
