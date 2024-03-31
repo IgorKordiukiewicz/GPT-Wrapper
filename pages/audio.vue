@@ -71,13 +71,13 @@ function resetTranscriptAudioInput() {
 
 <template>
     <div class="container">
-        <div class="speech-container">
+        <div class="half-column">
             <h4 class="header">Speech</h4>
             <div class="content-container column-container">
                 <form class="column-container overflow-auto" @submit="generateSpeech">
                     <label>Content</label>
                     <ExpandableInput placeholder="Enter content..." v-model="speechContentInput"></ExpandableInput>
-                    <button type="submit" class="button primary end-button" :disabled="isGenerateSpeechButtonDisabled">Generate</button>
+                    <button type="submit" class="button primary self-end" :disabled="isGenerateSpeechButtonDisabled">Generate</button>
                 </form>
                 <template v-if="speechOutputUrl || speechInProgress">
                     <label>Output</label>
@@ -92,7 +92,7 @@ function resetTranscriptAudioInput() {
             </div>
         </div>
         <div class="vertical-divider"></div>
-        <div class="transcription-container">
+        <div class="half-column">
             <h4 class="header">Transcription</h4>
             <div class="content-container column-container">
                 <input type="file" accept=".mp3" @change="submitAudioFile" style="display: none;" id="fileUpload" />
@@ -106,7 +106,7 @@ function resetTranscriptAudioInput() {
                         </div>
                     </template>
                     </AudioPlayer>
-                    <button type="submit" class="button primary end-button" :disabled="isGenerateTranscriptionButtonDisabled">Generate</button>
+                    <button type="submit" class="button primary self-end" :disabled="isGenerateTranscriptionButtonDisabled">Generate</button>
                 </form>
                 <div class="column-container overflow-auto" v-if="transcriptionOutput || transcriptionInProgress">
                     <div class="output-actions">
@@ -137,13 +137,7 @@ function resetTranscriptAudioInput() {
     gap: 1rem;
 }
 
-.speech-container {
-    height: 100%;
-    width: 50%;
-    overflow-y: hidden;
-}
-
-.transcription-container {
+.half-column {
     height: 100%;
     width: 50%;
     overflow-y: hidden;
@@ -169,10 +163,6 @@ function resetTranscriptAudioInput() {
 .content-container {
     overflow-y: hidden;
     max-height: calc(100% - 20px - 1rem);
-}
-
-.end-button {
-    align-self: end;
 }
 
 .transcript-content {

@@ -23,7 +23,7 @@ function onSubmit() {
     <div class="center-container">
         <form class="key-input-container" @submit="onSubmit">
             <KeyInput ref="keyInput"></KeyInput>
-            <button type="submit" class="button primary" style="align-self: end" :disabled="isContinueButtonDisabled">Continue</button>
+            <button type="submit" class="button primary self-end" :disabled="isContinueButtonDisabled">Continue</button>
         </form>
     </div>
 </template>

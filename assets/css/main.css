@@ -59,6 +59,10 @@ button[disabled] {
     width: 100%;
 }
 
+.self-end {
+    align-self: flex-end;
+}
+
 textarea {
     resize: none;
     text-decoration: none;
