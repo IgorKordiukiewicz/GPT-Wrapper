@@ -18,7 +18,7 @@ function update() {
     localStorage.setItem('apiKey', apiKeyInput.value);
 }
 
-defineExpose({ update });
+defineExpose({ update, apiKeyInput });
 </script>
 
 <template>
