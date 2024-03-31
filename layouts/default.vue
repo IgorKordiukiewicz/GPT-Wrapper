@@ -54,7 +54,7 @@ onMounted(() => {
         <div class="center-container">
             <div class="key-input-container">
                 <KeyInput ref="initialKeyInput"></KeyInput>
-                <button type="button" class="button primary" style="align-self: end; height: fit-content" @click="updateApiKey" :disabled="isContinueButtonDisabled">Continue</button>
+                <button type="button" class="button primary" style="align-self: end" @click="updateApiKey" :disabled="isContinueButtonDisabled">Continue</button>
             </div>
         </div>
     </template>
