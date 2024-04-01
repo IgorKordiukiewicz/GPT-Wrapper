@@ -19,7 +19,11 @@ type Message = {
 const messages = ref<Message[]>([])
 const messageInput = ref<InstanceType<typeof ExpandableInput> | null>();
 
+const systemMessage = ref<string | undefined>();
+const systemMessageInput = ref<string | undefined>();
+
 const messagesContainer = ref();
+const optionsDialog = ref();
 
 const api = useApi();
 
@@ -67,10 +71,19 @@ async function updateLastMessageWithApiResponse() {
 }
 
 function mapMessagesToApiData() {
-    return messages.value.map(x => ({
+    const mappedMessages = messages.value.map(x => ({
         role: x.sender == MessageSender.AI ? 'assistant' : 'user',
         content: x.content as string
     }));
+
+    if(systemMessage.value) {
+        mappedMessages.unshift({
+            role: 'system',
+            content: systemMessage.value
+        });
+    }
+
+    return mappedMessages;
 }
 
 function scrollToLatestMessage() {
@@ -85,6 +98,14 @@ function isLastMessage(message: Message) {
     return messages.value.indexOf(message) == messages.value.length - 1;
 }
 
+function showOptionsDialog() {
+    optionsDialog.value.show();
+}
+
+function updateSystemMessage() {
+    systemMessage.value = systemMessageInput.value;
+}
+
 </script>
 
 <template>
@@ -92,8 +113,12 @@ function isLastMessage(message: Message) {
         <div style="position: relative">
             <div class="toolbar">
                 <IconButton icon="bi-arrow-counterclockwise" class="toolbar-item" @onClick="resetChat"></IconButton>
-                <IconButton icon="io-options" class="toolbar-item"></IconButton>
+                <IconButton icon="io-options" class="toolbar-item" @onClick="showOptionsDialog"></IconButton>
             </div>
+            <Dialog title="Chat Options" ref="optionsDialog" @onSubmit="updateSystemMessage">
+                <label>System Message</label>
+                <ExpandableInput placeholder="Enter system message..." class="system-message-input" v-model="systemMessageInput"></ExpandableInput>
+            </Dialog>
         </div>
         <div class="messages-container" ref="messagesContainer">
             <div v-for="message in messages">
@@ -163,6 +188,11 @@ function isLastMessage(message: Message) {
     align-items: center;
     padding: 0 0.5rem;
     cursor: pointer;
+}
+
+.system-message-input {
+    max-height: 40vh; 
+    width: 25vw;
 }
 
 .messages-container {
