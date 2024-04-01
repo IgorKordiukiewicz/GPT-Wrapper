@@ -25,7 +25,11 @@ const api = useApi();
 
 const isSendButtonDisabled = computed(() => {
     return !messageInput.value?.isValid ?? true;
-})
+});
+
+function resetChat() {
+    messages.value = [];
+}
 
 async function sendMessage(event: Event) {
     if(!messageInput.value) {
@@ -85,6 +89,12 @@ function isLastMessage(message: Message) {
 
 <template>
     <div class="chat-container">
+        <div style="position: relative">
+            <div class="toolbar">
+                <IconButton icon="bi-arrow-counterclockwise" class="toolbar-item" @onClick="resetChat"></IconButton>
+                <IconButton icon="io-options" class="toolbar-item"></IconButton>
+            </div>
+        </div>
         <div class="messages-container" ref="messagesContainer">
             <div v-for="message in messages">
                 <template v-if="message.sender == MessageSender.AI">
@@ -125,6 +135,34 @@ function isLastMessage(message: Message) {
     flex-direction: column;
     justify-content: space-between;
     height: 100%;
+}
+
+.toolbar:hover {
+    height: 2rem;
+    transition: height 0.15s ease;
+}
+
+.toolbar .toolbar-item {
+    visibility: hidden;
+}
+
+.toolbar:hover .toolbar-item {
+    visibility: visible;
+}
+
+.toolbar {
+    position: absolute; 
+    height: 0.5rem; 
+    left: 50%;
+    transform: translate(-50%, -1rem);
+    background: var(--secondary-color);
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    padding: 0 0.5rem;
+    cursor: pointer;
 }
 
 .messages-container {
