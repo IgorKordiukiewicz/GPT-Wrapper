@@ -22,13 +22,15 @@ const messageInput = ref<InstanceType<typeof ExpandableInput> | null>();
 const systemMessage = ref<string | undefined>();
 const systemMessageInput = ref<string | undefined>();
 
+const inProgress = ref<boolean>(false);
+
 const messagesContainer = ref();
 const optionsDialog = ref();
 
 const api = useApi();
 
 const isSendButtonDisabled = computed(() => {
-    return !messageInput.value?.isValid ?? true;
+    return !messageInput.value?.isValid || inProgress.value;
 });
 
 function resetChat() {
@@ -39,8 +41,8 @@ async function sendMessage(event: Event) {
     if(!messageInput.value) {
         return;
     }
-
     event.preventDefault();
+    inProgress.value = true;
 
     const message = messageInput.value.input!;
     messageInput.value.reset();
@@ -50,6 +52,7 @@ async function sendMessage(event: Event) {
 }
 
 async function regenerateMessage(event: Event) {
+    inProgress.value = true;
     messages.value.pop();
     await updateLastMessageWithApiResponse();
 }
@@ -67,6 +70,7 @@ async function updateLastMessageWithApiResponse() {
     }
 
     messages.value[messages.value.length - 1].content = response;
+    inProgress.value =false;
     scrollToLatestMessage();
 }
 
