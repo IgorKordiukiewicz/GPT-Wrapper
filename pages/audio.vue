@@ -166,11 +166,10 @@ function resetTranscriptAudioInput() {
 }
 
 .transcript-content {
-    background: #3d3d3d88;
+    background: var(--secondary-color);
     padding: 1rem;
     border-radius: 5px;
     margin: 0;
-    color: #c5c5c5;
     white-space: pre-wrap;
     overflow-y: auto;
 }
