@@ -215,6 +215,7 @@ function updateSystemMessage() {
 }
 
 .message-button {
-    height: 56px;
+    height: 54px;
+    margin: 1px 0;
 }
 </style>
