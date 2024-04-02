@@ -1,20 +1,11 @@
 <script setup lang="ts">
 import type ExpandableInput from '~/components/ExpandableInput.vue';
+import { type Message, MessageSender } from '~/types/chat';
 
 
 definePageMeta({
     alias: '/'
 });
-
-enum MessageSender {
-    User,
-    AI
-}
-
-type Message = {
-    sender: MessageSender,
-    content: string | undefined
-}
 
 const messages = ref<Message[]>([])
 const messageInput = ref<InstanceType<typeof ExpandableInput> | null>();
@@ -58,11 +49,11 @@ async function regenerateMessage(event: Event) {
 }
 
 async function updateLastMessageWithApiResponse() {
-    var apiMessages = mapMessagesToApiData();
+    const messagesCopy = [...messages.value];
     messages.value.push({ sender: MessageSender.AI, content: undefined });
     scrollToLatestMessage();
 
-    const response = await api.sendChatMessage(apiMessages);
+    const response = await api.sendChatMessage(messagesCopy, systemMessage.value);
     if(!response) {
         messages.value.pop();
         messages.value.pop();
@@ -72,22 +63,6 @@ async function updateLastMessageWithApiResponse() {
     messages.value[messages.value.length - 1].content = response;
     inProgress.value =false;
     scrollToLatestMessage();
-}
-
-function mapMessagesToApiData() {
-    const mappedMessages = messages.value.map(x => ({
-        role: x.sender == MessageSender.AI ? 'assistant' : 'user',
-        content: x.content as string
-    }));
-
-    if(systemMessage.value) {
-        mappedMessages.unshift({
-            role: 'system',
-            content: systemMessage.value
-        });
-    }
-
-    return mappedMessages;
 }
 
 function scrollToLatestMessage() {

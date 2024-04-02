@@ -1,3 +1,4 @@
+import { type Message, MessageSender } from './../types/chat';
 import { useToast } from "vue-toastification";
 
 export const useApi = () => {
@@ -5,7 +6,7 @@ export const useApi = () => {
 
     async function performRequest(url: string, body: any, headers?: any) {
         try  {
-            const { data, error } = await useFetch<any>(url, {
+            const { data, error } = await useFetch<any>(`https://api.openai.com/v1/${url}`, {
                 method: 'POST',
                 body: body,
                 headers: headers ? headers : getHeaders()
@@ -27,22 +28,22 @@ export const useApi = () => {
     }
 
     return {
-        async sendChatMessage(messages: {role: string, content: string}[]) {
-            const data = await performRequest('https://api.openai.com/v1/chat/completions', {
+        async sendChatMessage(messages: Message[], systemMessage?: string) { 
+            const data = await performRequest('chat/completions', {
                 model: 'gpt-4-turbo-preview',
-                messages: messages
+                messages: mapMessagesToApiModel(messages, systemMessage)
             });
-            return data.choices[0].message.content;
+            return data?.choices[0].message.content;
         },
         async generateImage(prompt: string) {
-            const data = await performRequest('https://api.openai.com/v1/images/generations', {
+            const data = await performRequest('images/generations', {
                 model: 'dall-e-3',
                 prompt: prompt
             });
-            return data.data[0].url;
+            return data?.data[0].url;
         },
         async generateSpeech(input: string) {
-            const data = await performRequest('https://api.openai.com/v1/audio/speech', {
+            const data = await performRequest('audio/speech', {
                 model: 'tts-1',
                 input: input,
                 voice: 'alloy'
@@ -54,10 +55,10 @@ export const useApi = () => {
             formData.append('model', 'whisper-1');
             formData.append('file', file);
 
-            const data = await performRequest('https://api.openai.com/v1/audio/transcriptions', formData, {
+            const data = await performRequest('audio/transcriptions', formData, {
                 'Authorization': `Bearer ${getApiKey()}`
             });
-            return data.text;
+            return data?.text;
         }
     }
 }
@@ -77,4 +78,20 @@ function getApiKey() {
     }
 
     return apiKey;
+}
+
+function mapMessagesToApiModel(messages: Message[], systemMessage?: string) {
+    const mappedMessages = messages.map(x => ({
+        role: x.sender == MessageSender.AI ? 'assistant' : 'user',
+        content: x.content as string
+    }));
+
+    if(systemMessage) {
+        mappedMessages.unshift({
+            role: 'system',
+            content: systemMessage
+        });
+    }
+
+    return mappedMessages;
 }
