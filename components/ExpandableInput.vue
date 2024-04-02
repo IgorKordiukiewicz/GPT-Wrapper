@@ -23,9 +23,9 @@ const isValid = computed(() => {
 defineExpose({ reset, input, isValid });
 
 onMounted(() => {
-    document.querySelector('textarea')?.addEventListener("input", function(){
-        this.style.height = '20px';
-        this.style.height = `${this.scrollHeight - 32}px`;
+    textArea.value?.addEventListener("input", function(){
+        textArea.value.style.height = '20px';
+        textArea.value.style.height = `${textArea.value.scrollHeight - 32}px`;
     });
 });
 
