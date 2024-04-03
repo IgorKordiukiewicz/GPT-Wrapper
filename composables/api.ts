@@ -1,5 +1,6 @@
 import { type Message, MessageSender } from './../types/chat';
 import { useToast } from "vue-toastification";
+import { encodingForModel } from 'js-tiktoken';
 
 export const useApi = () => {
     const toast = useToast();
@@ -91,6 +92,30 @@ function mapMessagesToApiModel(messages: Message[], systemMessage?: string) {
             role: 'system',
             content: systemMessage
         });
+    }
+
+    // Remove older messages if necessary to not exceed the token limit
+    const enc = encodingForModel('gpt-4-turbo-preview');
+    const systemMessageTokens = systemMessage ? enc.encode(systemMessage).length : 0;
+    const lastMessageTokens = enc.encode(mappedMessages[mappedMessages.length - 1].content).length;
+    var totalTokens = 0;
+     // 4095 - max allowed, and leave 1000 for generation
+    const tokensThreshold = 4095 - 1000 - systemMessageTokens - lastMessageTokens;
+    if(tokensThreshold <= 0 || mappedMessages.length < 3) {
+        return mappedMessages;
+    }
+
+    for(var i = mappedMessages.length - 2; i >= 0; i -= 2) {
+        const aiMessage = mappedMessages[i].content;
+        const userMessage = mappedMessages[i - 1].content;
+
+        totalTokens += enc.encode(aiMessage + userMessage).length;
+        if(totalTokens > tokensThreshold) {
+            const startIndex = systemMessage ? 1 : 0;
+            const elementsCount = i - startIndex + 1;
+            mappedMessages.splice(startIndex, elementsCount);
+            break;
+        }
     }
 
     return mappedMessages;
