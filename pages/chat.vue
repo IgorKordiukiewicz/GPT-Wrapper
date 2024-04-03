@@ -91,7 +91,7 @@ function updateSystemMessage() {
     <div class="chat-container">
         <div style="position: relative">
             <div class="toolbar">
-                <IconButton icon="bi-arrow-counterclockwise" class="toolbar-item" @onClick="resetChat"></IconButton>
+                <IconButton icon="bi-arrow-counterclockwise" class="toolbar-item" @onClick="resetChat" :disabled="inProgress"></IconButton>
                 <IconButton icon="io-options" class="toolbar-item" @onClick="showOptionsDialog"></IconButton>
             </div>
             <Dialog title="Chat Options" ref="optionsDialog" @onSubmit="updateSystemMessage">
