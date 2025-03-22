@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "js-tiktoken": "^1.0.10",
-    "nuxt": "^3.11.1",
+    "nuxt": "^3.16.0",
     "oh-vue-icons": "^1.0.0-rc3",
     "vue": "^3.4.21",
     "vue-router": "^4.3.0",
